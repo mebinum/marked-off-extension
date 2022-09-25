@@ -1,0 +1,115 @@
+<html>
+    <body>
+        <div class="notion-popup" id="notion-sign-popup">
+			<div class="notion-head">
+				<div class="notion-title">Sign this page</div>
+				<img src="assets/close.svg" id="notion-close-2">
+			</div>
+			<div id="notion-video-container">
+				<video id="notion-video" muted></video>	
+			</div>		
+			<div id="record-button">
+				<div id="record-button-shape"></div>
+			</div>
+		</div>
+        <div id="signing-form-wrap" class="notion-form-wrap">
+			<div id="marked-off-form" class="notion-form">
+				<div class="notion-form-header">
+					<div class="notion-form-title">Send Signature Request</div>
+					<img src="assets/close.svg" id="notion-form-close" class="notion-close-btn">
+				</div>
+				<div class="notion-form-body">
+					<div class="notion-form-section">
+						<div class="notion-form-section-title">Icon</div>
+						<div class="notion-form-field">
+							<div class="notion-form-label">Image URL</div>
+							<input class="notion-form-input" id="notion-image-field" name="notion-form-image" placeholder="Image URL">
+						</div>
+					</div>
+					<hr/>
+					<div class="notion-form-section">
+						<div class="notion-form-section-title">Sender's Details</div>
+						<div class="notion-form-field">
+							<div class="notion-form-label">Your Name</div>
+							<input class="notion-form-input" id="notion-name-field" name="notion-form-requester-name" placeholder="Your name">
+						</div>
+                        <div class="notion-form-field">
+							<div class="notion-form-label">Your Email</div>
+							<input class="notion-form-input" id="notion-email-field" name="notion-form-requester-email" placeholder="Your email">
+						</div>
+                    </div>
+                    <hr/>
+                    <div class="notion-form-section">
+						<div class="notion-form-section-title">Signer's Details</div>
+						<div class="notion-form-field">
+							<div class="notion-form-label">Signer's Name</div>
+							<input class="notion-form-input" id="notion-signer-name-field" name="notion-form-signer-name" placeholder="Your name">
+						</div>
+                        <div class="notion-form-field">
+							<div class="notion-form-label">Signers Email</div>
+							<input class="notion-form-input" id="notion-signer-email-field" name="notion-form-signer-email" placeholder="Your email">
+						</div>
+                    </div>
+                    <hr/>
+                    <div>
+                        <div class="notion-form-field">
+                            <div class="notion-form-label">Description</div>
+                            <input class="notion-form-input" id="notion-description-field" name="notion-form-command-description" placeholder="Command description">
+                        </div>
+                        <div class="notion-form-field">
+                            <div class="notion-form-label">Command</div>
+                            <input class="notion-form-input" name="notion-form-command" placeholder="/command" id="notion-command-field" value="/">
+                        </div>
+                    </div>
+					</div>
+					<hr>
+					<div class="notion-form-section">
+						<div class="notion-form-section-title">Preferences</div>
+						<div class="notion-form-dropdown">
+							<div class="notion-form-dropdown-left">
+								<div class="notion-form-dropdown-title">Type of action</div>
+								<div class="notion-form-dropdown-description">Choose the type of action the command will perform</div>
+							</div>
+							<div class="notion-form-dropdown-right">
+								<div class="notion-form-dropdown-wrap" id="notion-form-type" data-id="Template"><span>Template</span><img src="assets/dropdown.svg"></div>
+								<div class="notion-form-dropdown-options">
+									<div class="notion-form-dropdown-option" data-id="Template">Template</div>
+									<div class="notion-form-dropdown-option" data-id="Image">Image</div>
+									<div class="notion-form-dropdown-option" data-id="Script">Script</div>
+								</div>
+							</div>
+						</div>
+						<div class="notion-form-dropdown">
+							<div class="notion-form-dropdown-left">
+								<div class="notion-form-dropdown-title">Visibility</div>
+								<div class="notion-form-dropdown-description">Choose whether the command is visible</div>
+							</div>
+							<div class="notion-form-dropdown-right">
+								<div class="notion-form-dropdown-wrap" id="notion-form-visibility" data-id="Visible"><span>Visible</span><img src="assets/dropdown.svg"></div>
+								<div class="notion-form-dropdown-options">
+									<div class="notion-form-dropdown-option" data-id="Visible">Visible</div>
+									<div class="notion-form-dropdown-option" data-id="Hidden">Hidden</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="notion-form-section">
+						<div class="notion-form-section-title">Action</div>
+						<div class="notion-form-field">
+							<div class="notion-form-label" id="notion-action-label">Template content</div>
+							<textarea class="notion-form-textarea" placeholder="Write some content to insert into the Notion page"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="notion-form-buttons">
+					<div class="notion-form-button-wrap">
+						<div class="notion-form-cancel">Cancel</div>
+						<div class="notion-form-save">Save</div>
+					</div>
+				</div>
+			</div>
+			<div class="notion-form-back"></div>
+		</div>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+{
+	"name": "Marked Off - Turn Notion documents into legal agreement documents",
+	"description": "Turn Notion documents into legal agreement documents.",
+	"offline_enabled": false,
+	"version": "0.0.1",
+	"manifest_version": 3,
+    "default_locale": "en",
+	"background": {
+		"service_worker": "background.js"
+	},
+	"icons": {
+		"16": "assets/icons_16.png",
+		"48": "assets/icons_48.png",
+		"128": "assets/icons_128.png"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.notion.so/*"
+			],
+			"run_at": "document_end",
+			"js": ["content.js"],
+			"css": ["content.css"]
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources":  ["content.html", "newtab.html", "assets/*", "popup.css", "popup.js", "force.js"],
+			"matches": ["<all_urls>"]
+		}
+	],
+	"permissions": [
+		"clipboardWrite", "clipboardRead", "storage"
+	]
+}
