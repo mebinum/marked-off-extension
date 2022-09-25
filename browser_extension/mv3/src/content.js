@@ -2,17 +2,19 @@ $ = require("jquery");
 const helloSignKey =
   "cdaa322c1a759e56dbecd070f097f4837259ac8ab93172aed3c254a91e51db1a";
 const HelloSign = require("hellosign-embedded");
+const helloSignClient = new HelloSign({
+  clientId: "e8bef94dd5a2e23cf4e32bfd9de4fd4a",
+  debug: true,
+  allowCancel: true,
+  hideHeader: true,
+});
 
 $(function () {
-  console.log("Hello");
-  var commands = [];
   var lastelement;
   var lastcommand;
   var cursorpos;
   var saving = false;
-  const helloSignClient = new HelloSign({
-    clientId: "e8bef94dd5a2e23cf4e32bfd9de4fd4a",
-  });
+
   const extensionId = "notion-marked-button";
   const sidebarActiveClass = "marked-button-active";
   const signButtonClass = "notion-sign-button";
@@ -143,24 +145,28 @@ $(function () {
       }
     }
   }
-  function signNotionPage() {
-    client.open(
+
+  function sendSignatureRequest() {
+    console.log("send signature request");
+  }
+
+  function signNotionPage({ requestingEmail }) {
+    helloSignClient.open(
       "https://app.hellosign.com/editor/embeddedSign?signature_id=2f08917d63f6aaf7841a281a3f276015&token=9ab556762baaae7bea5697d7f91ac25c",
       {
         testMode: true,
+        requestingEmail,
+        skipDomainVerification: true,
       }
     );
   }
+
   function showSigningForm() {
     console.log("start signDocument");
-    $(".notion-form-wrap").addClass("notion-show-form");
-    $(".notion-form-wrap input").val("");
-    $(".notion-form-wrap textarea").val("");
-    $("#notion-command-field").val("/");
-    $(".notion-form-save").attr("data-edit", "false");
-    $("#notion-form-type").attr("data-id", "Template");
-    $("#notion-form-type span").html("Template");
-    $("#notion-action-label").html("Template content");
+    $("#signing-form-wrap").addClass("notion-show-form");
+    $("#signing-form-wrap input").val("");
+    $("#signing-form-wrap textarea").val("");
+    $("#send-signature-btn").attr("data-edit", "false");
     $(".notion-form-error").removeClass("notion-form-error");
     $(".notion-form-body").scrollTop(0);
   }
@@ -173,6 +179,8 @@ $(function () {
   $(document).on("click", `#${extensionId}`, toggleSidebar);
   $(document).on("click", `.${signButtonClass}`, showSigningForm);
   $(document).on("click", "#notion-form-close", hideSigningForm);
+  $(document).on("click", "#send-signature-btn", sendSignatureRequest);
+
   //initialize extension
   injectContent();
 });

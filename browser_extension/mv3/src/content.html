@@ -16,96 +16,45 @@
 			<div id="marked-off-form" class="notion-form">
 				<div class="notion-form-header">
 					<div class="notion-form-title">Send Signature Request</div>
-					<img src="assets/close.svg" id="notion-form-close" class="notion-close-btn">
+					<div id="notion-form-close" class="notion-close-button">&nbsp;</div>
 				</div>
 				<div class="notion-form-body">
 					<div class="notion-form-section">
-						<div class="notion-form-section-title">Icon</div>
-						<div class="notion-form-field">
-							<div class="notion-form-label">Image URL</div>
-							<input class="notion-form-input" id="notion-image-field" name="notion-form-image" placeholder="Image URL">
-						</div>
-					</div>
-					<hr/>
-					<div class="notion-form-section">
 						<div class="notion-form-section-title">Sender's Details</div>
 						<div class="notion-form-field">
+
 							<div class="notion-form-label">Your Name</div>
-							<input class="notion-form-input" id="notion-name-field" name="notion-form-requester-name" placeholder="Your name">
-						</div>
-                        <div class="notion-form-field">
-							<div class="notion-form-label">Your Email</div>
-							<input class="notion-form-input" id="notion-email-field" name="notion-form-requester-email" placeholder="Your email">
+							<div class="notion-form-input-multiple">
+							<input class="notion-form-input" required id="notion-name-field" name="notion-form-requester-name" placeholder="Your name">
+							<input class="notion-form-input" required id="notion-email-field" name="notion-form-requester-email" placeholder="Your email">
+							</div>
 						</div>
                     </div>
                     <hr/>
                     <div class="notion-form-section">
-						<div class="notion-form-section-title">Signer's Details</div>
+						<div class="notion-form-section-title">Signer Details</div>
 						<div class="notion-form-field">
-							<div class="notion-form-label">Signer's Name</div>
-							<input class="notion-form-input" id="notion-signer-name-field" name="notion-form-signer-name" placeholder="Your name">
-						</div>
-                        <div class="notion-form-field">
-							<div class="notion-form-label">Signers Email</div>
-							<input class="notion-form-input" id="notion-signer-email-field" name="notion-form-signer-email" placeholder="Your email">
+							<div class="notion-form-label">Signer's Signatories</div>
+							<div class="notion-form-input-multiple">
+								<input class="notion-form-input" required id="notion-signer-name-field" name="notion-form-signer-name" placeholder="Signer's name">
+								<input class="notion-form-input" required id="notion-signer-email-field" name="notion-form-signer-email" placeholder="Signer's email">
+							</div>
 						</div>
                     </div>
                     <hr/>
-                    <div>
-                        <div class="notion-form-field">
-                            <div class="notion-form-label">Description</div>
-                            <input class="notion-form-input" id="notion-description-field" name="notion-form-command-description" placeholder="Command description">
-                        </div>
-                        <div class="notion-form-field">
-                            <div class="notion-form-label">Command</div>
-                            <input class="notion-form-input" name="notion-form-command" placeholder="/command" id="notion-command-field" value="/">
-                        </div>
-                    </div>
-					</div>
-					<hr>
 					<div class="notion-form-section">
-						<div class="notion-form-section-title">Preferences</div>
-						<div class="notion-form-dropdown">
-							<div class="notion-form-dropdown-left">
-								<div class="notion-form-dropdown-title">Type of action</div>
-								<div class="notion-form-dropdown-description">Choose the type of action the command will perform</div>
-							</div>
-							<div class="notion-form-dropdown-right">
-								<div class="notion-form-dropdown-wrap" id="notion-form-type" data-id="Template"><span>Template</span><img src="assets/dropdown.svg"></div>
-								<div class="notion-form-dropdown-options">
-									<div class="notion-form-dropdown-option" data-id="Template">Template</div>
-									<div class="notion-form-dropdown-option" data-id="Image">Image</div>
-									<div class="notion-form-dropdown-option" data-id="Script">Script</div>
-								</div>
-							</div>
-						</div>
-						<div class="notion-form-dropdown">
-							<div class="notion-form-dropdown-left">
-								<div class="notion-form-dropdown-title">Visibility</div>
-								<div class="notion-form-dropdown-description">Choose whether the command is visible</div>
-							</div>
-							<div class="notion-form-dropdown-right">
-								<div class="notion-form-dropdown-wrap" id="notion-form-visibility" data-id="Visible"><span>Visible</span><img src="assets/dropdown.svg"></div>
-								<div class="notion-form-dropdown-options">
-									<div class="notion-form-dropdown-option" data-id="Visible">Visible</div>
-									<div class="notion-form-dropdown-option" data-id="Hidden">Hidden</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<hr>
-					<div class="notion-form-section">
-						<div class="notion-form-section-title">Action</div>
+						<div class="notion-form-section-title">Message to signer</div>
 						<div class="notion-form-field">
-							<div class="notion-form-label" id="notion-action-label">Template content</div>
-							<textarea class="notion-form-textarea" placeholder="Write some content to insert into the Notion page"></textarea>
+							<div class="notion-form-label" id="notion-action-label">Message (optional)</div>
+							<textarea class="notion-form-textarea" placeholder="Write a message to the person you are requesting a signature from"></textarea>
 						</div>
 					</div>
+					<hr/>
 				</div>
 				<div class="notion-form-buttons">
 					<div class="notion-form-button-wrap">
 						<div class="notion-form-cancel">Cancel</div>
-						<div class="notion-form-save">Save</div>
+						<div id="send-signature-btn" class="notion-form-action">Send for Signature</div>
 					</div>
 				</div>
 			</div>

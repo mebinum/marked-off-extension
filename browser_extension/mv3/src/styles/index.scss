@@ -1,0 +1,25 @@
+
+.notion-form-input-multiple {
+    display: flex;
+    .notion-form-input {
+        &:first-child {
+            margin-right: 10px;
+        }
+        width: 48%;
+    }
+}
+
+.notion-close-button {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18 6L6 18' stroke='%2355534E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6 6L18 18' stroke='%2355534E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+    width:24px;
+    height:24px;
+    position: absolute;
+    right: 15px;
+    top: 13px;
+    opacity: 0.5;
+    &:hover {
+        cursor: pointer;
+        opacity: 1 !important;
+    }
+}
+

@@ -740,6 +740,7 @@
   right: 15px;
   margin-top: 5px;
 }
+
 .notion-form-cancel {
   display: inline-block;
   color: rgba(125, 124, 120, 1);
@@ -750,7 +751,8 @@
     "Segoe UI Symbol";
   cursor: pointer;
 }
-.notion-form-save {
+
+.notion-form-action {
   display: inline-block;
   color: #fff;
   font-size: 14px;

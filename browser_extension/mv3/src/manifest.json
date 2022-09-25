@@ -20,7 +20,7 @@
 			],
 			"run_at": "document_end",
 			"js": ["content.js"],
-			"css": ["content.css"]
+			"css": ["content.css", "styles.css"]
 		}
 	],
 	"web_accessible_resources": [
