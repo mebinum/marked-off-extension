@@ -1,3 +1,5 @@
+const { AFTER_INSTALL_URL } = require("./config");
+console.log("AFTER_INSTALL_URL", AFTER_INSTALL_URL);
 const afterInstallOrUpdate = (install = true) => {
   chrome.storage.sync.get(["commands"], function (result) {
     console.log(result);
@@ -28,7 +30,7 @@ const afterInstallOrUpdate = (install = true) => {
 
   if (install === true) {
     chrome.tabs.create({
-      url: "https://sheda.notion.site/Getting-Started-With-Marked-Off-a923b3afc5d54778a2d0f2a2878ca8fa",
+      url: AFTER_INSTALL_URL,
     });
   }
 };

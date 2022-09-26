@@ -1,9 +1,13 @@
 $ = require("jquery");
-const helloSignKey =
-  "cdaa322c1a759e56dbecd070f097f4837259ac8ab93172aed3c254a91e51db1a";
 const HelloSign = require("hellosign-embedded");
+const {
+  MARKED_SERVER_URL,
+  HELLO_SIGN_KEY,
+  HELLO_SIGN_CLIENTID,
+} = require("./config");
+
 const helloSignClient = new HelloSign({
-  clientId: "e8bef94dd5a2e23cf4e32bfd9de4fd4a",
+  clientId: HELLO_SIGN_CLIENTID,
   debug: true,
   allowCancel: true,
   hideHeader: true,
@@ -12,6 +16,7 @@ const helloSignClient = new HelloSign({
 $(function () {
   var lastelement;
   var lastcommand;
+  let command;
   var cursorpos;
   var saving = false;
 
@@ -148,6 +153,32 @@ $(function () {
 
   function sendSignatureRequest() {
     console.log("send signature request");
+    const formData = new FormData(
+      document.querySelector("#send-signature-form")
+    );
+    console.log("formDatam", formData.entries());
+
+    const currentPath = window.location.pathname;
+    const notionPageId = currentPath.split("-").slice(-1)[0];
+    const jqxhr = $.ajax({
+      type: "POST",
+      url: `${MARKED_SERVER_URL}/markoff/${notionPageId}`,
+      data: {},
+      beforeSend: () => {
+        $(".notion-form-spinner-wrap ").show();
+      },
+      success: (data) => {
+        console.log("result");
+        console.log(data);
+      },
+    });
+    jqxhr
+      .always(() => {
+        $(".notion-form-spinner-wrap ").hide();
+      })
+      .fail((error) => {
+        console.error(error);
+      });
   }
 
   function signNotionPage({ requestingEmail }) {

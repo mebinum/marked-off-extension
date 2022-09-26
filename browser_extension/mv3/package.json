@@ -52,13 +52,6 @@
                 ]
             }
         ],
-         "rules": [
-      {
-        "test": /\.(png|jpg|svg)$/,
-        "use": [{
-          "loader": "file-loader"
-        }]
-      },
         "scss_bundles": [
             {
                 "src": [

@@ -767,6 +767,8 @@
   padding-right: 15px;
   background: #54a9d7;
   border: 1px solid #4d9ac3;
+  padding: 0px 10px;
+  border-width: thin;
   box-sizing: border-box;
   border-radius: 5px;
   margin-left: 15px;
