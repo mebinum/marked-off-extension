@@ -2,24 +2,25 @@
     <body>
         <div class="notion-popup" id="notion-sign-popup">
 			<div class="notion-head">
-				<div class="notion-title">Sign this page</div>
-				<img src="assets/close.svg" id="notion-close-2">
+				<div class="notion-title">Congrats you sent a request to sign document</div>
+				<div id="notion-popup-close" class="notion-close-button">&nbsp;</div>
 			</div>
-			<div id="notion-video-container">
-				<video id="notion-video" muted></video>	
-			</div>		
-			<div id="record-button">
-				<div id="record-button-shape"></div>
+			<div class="notion-form-section">
+				<p>An email request to sign document has been sent</p>
+			</div>
 			</div>
 		</div>
         <div id="signing-form-wrap" class="notion-form-wrap">
-			<form action="#" id="send-signature-form">
+			<form id="send-signature-form">
 				<div id="marked-off-form" class="notion-form">
 					<div class="notion-form-header">
 						<div class="notion-form-title">Send Signature Request</div>
 						<div id="notion-form-close" class="notion-close-button">&nbsp;</div>
 					</div>
 					<div class="notion-form-body">
+						<div id="notion-form-errors" class="notion-form-section notion-form-errors" style="display:none">
+							<p id="form-errors">The fields in red below are required</p>
+						</div>
 						<div class="notion-form-section">
 							<div class="notion-form-section-title">Sender's Details</div>
 							<div class="notion-form-field">
@@ -47,7 +48,7 @@
 							<div class="notion-form-section-title">Message to signer</div>
 							<div class="notion-form-field">
 								<div class="notion-form-label" id="notion-action-label">Message (optional)</div>
-								<textarea class="notion-form-textarea" placeholder="Write a message to the person you are requesting a signature from"></textarea>
+								<textarea class="notion-form-textarea" id="notion-requester-message" name="notion-requester-message" placeholder="Write a message to the person you are requesting a signature from"></textarea>
 							</div>
 						</div>
 						<hr/>

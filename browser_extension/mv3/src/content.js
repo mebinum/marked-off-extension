@@ -16,13 +16,15 @@ const helloSignClient = new HelloSign({
 $(function () {
   var lastelement;
   var lastcommand;
-  let command;
+  let commands;
+  let signatureRequests;
   var cursorpos;
   var saving = false;
 
   const extensionId = "notion-marked-button";
   const sidebarActiveClass = "marked-button-active";
   const signButtonClass = "notion-sign-button";
+  const signFormId = "send-signature-form";
   const commandbutton = `<div id="${extensionId}">
         <img src="${chrome.runtime.getURL("assets/pen.svg")}"></div>`;
   //   const commandsidebar = `<div id="notion-marked-off-sidebar" class="notion-marked-sidebar-thing">
@@ -35,7 +37,7 @@ $(function () {
       <div class="notion-sidebar-title">Documents</div>
       <div class="${signButtonClass}">Sign Document</div>
   </div>
-  <div class="notion-command-sidebar-body"></div>`;
+  <div id="notion-mark-sidebar-body" class="notion-command-sidebar-body"></div>`;
 
   function fixReact() {
     var s = document.createElement("script");
@@ -62,6 +64,11 @@ $(function () {
 
         waitForElm(".notion-topbar-share-menu").then(() => {
           $(".notion-topbar-share-menu").after(commandbutton);
+        });
+
+        const signatureForm = document.querySelector(`#${signFormId}`);
+        signatureForm.addEventListener("submit", (e) => {
+          e.preventDefault();
         });
       },
     });
@@ -151,53 +158,142 @@ $(function () {
     }
   }
 
-  function sendSignatureRequest() {
+  async function getSigningUrl(pageId, data) {
+    let result;
+
+    try {
+      result = await $.ajax({
+        type: "POST",
+        url: `${MARKED_SERVER_URL}/markoff/${pageId}`,
+        data,
+        beforeSend: () => {
+          $(".notion-form-spinner-wrap").show();
+        },
+      });
+
+      return result;
+    } catch (responseError) {
+      const {
+        responseJSON: { error },
+      } = responseError;
+      console.log(error);
+      const errorParagraph = document.querySelector("#form-errors");
+      errorParagraph.setHTML(error.message);
+      $("#notion-form-errors").show();
+    } finally {
+      $(".notion-form-spinner-wrap").hide();
+    }
+  }
+
+  async function sendSignatureRequest() {
     console.log("send signature request");
-    const formData = new FormData(
-      document.querySelector("#send-signature-form")
-    );
-    console.log("formDatam", formData.entries());
+    const form = document.querySelector(`#${signFormId}`);
+    const formData = new FormData(form);
+
+    const data = {
+      requesterName: formData.get("notion-form-requester-name"),
+      requesterEmail: formData.get("notion-form-requester-email"),
+      signerName: formData.get("notion-form-signer-name"),
+      signerEmail: formData.get("notion-form-signer-email"),
+      requesterMessage: formData.get("notion-form-requester-message"),
+    };
+    //if form is invalid
+    if (form.checkValidity() === false) {
+      $("#notion-form-errors").show();
+      return false;
+    }
+    $("#notion-form-errors").hide();
 
     const currentPath = window.location.pathname;
     const notionPageId = currentPath.split("-").slice(-1)[0];
-    const jqxhr = $.ajax({
-      type: "POST",
-      url: `${MARKED_SERVER_URL}/markoff/${notionPageId}`,
-      data: {},
-      beforeSend: () => {
-        $(".notion-form-spinner-wrap ").show();
-      },
-      success: (data) => {
-        console.log("result");
-        console.log(data);
-      },
-    });
-    jqxhr
-      .always(() => {
-        $(".notion-form-spinner-wrap ").hide();
-      })
-      .fail((error) => {
-        console.error(error);
-      });
+    const result = await getSigningUrl(notionPageId, data);
+    console.log("getSigningUrl result", result);
+    const { signingPdfUrl, signatureRequest } = result;
+    //     {
+    //     "unclaimed_draft": {
+    //         "claim_url": "https://embedded.hellosign.com/prep-and-send/embedded-request?cached_params_token=9756dbc7c624b1c8127dc6a739c95ef3",
+    //         "signing_redirect_url": null,
+    //         "test_mode": true,
+    //         "expires_at": 1664215990,
+    //         "signature_request_id": "54d54d31d555f0b8f37d38896093214298856cdb",
+    //         "requesting_redirect_url": null
+    //     }
+    // }
+    hideSigningForm();
+    signNotionPage(signingPdfUrl, signatureRequest);
+    saveSignatureRequest(signatureRequest);
+    showPopup();
   }
 
-  function signNotionPage({ requestingEmail }) {
-    helloSignClient.open(
-      "https://app.hellosign.com/editor/embeddedSign?signature_id=2f08917d63f6aaf7841a281a3f276015&token=9ab556762baaae7bea5697d7f91ac25c",
-      {
-        testMode: true,
-        requestingEmail,
-        skipDomainVerification: true,
+  function signNotionPage(signingPdfUrl, signatureRequest) {
+    return helloSignClient.open(signingPdfUrl, {
+      testMode: true,
+      requestingEmail: signatureRequest.requester_email_address,
+      skipDomainVerification: true,
+    });
+  }
+
+  function saveSignatureRequest(signatureRequest) {
+    chrome.storage.sync.get(["signatureRequests"], function (result) {
+      if (typeof result === "undefined") {
+        console.log("ERROR");
+      } else {
+        signatureRequests = result.signatureRequests.concat({
+          id: signatureRequest.client_id,
+          label: signatureRequest.title,
+          ...signatureRequest,
+        });
+        chrome.storage.sync.set({
+          signatureRequests: signatureRequests,
+        });
+        renderItems();
       }
-    );
+    });
+  }
+
+  function renderItems() {
+    $("#notion-mark-sidebar-body").html("");
+    var gettingItem = chrome.storage.sync.get("signatureRequests");
+    gettingItem.then((res) => {
+      if (typeof res === "undefined") {
+        console.log("ERROR");
+      } else {
+        res.signatureRequests.forEach(function (sigRequest) {
+          renderCommandItem(sigRequest);
+        });
+      }
+    });
+  }
+
+  function renderCommandItem(sigRequest) {
+    const name = sigRequest.label;
+    if (sigRequest.id == 0 || sigRequest.id == 1) {
+      $(".notion-command-sidebar-body").append(
+        `<div class='notion-command-sidebar-item' data-id='${sigRequest.id}'>
+          <div class='notion-command-sidebar-item-info'>
+            <div class='notion-command-sidebar-item-title'>${name}</div>
+          </div>
+        </div>`
+      );
+    } else {
+      $(".notion-command-sidebar-body").append(
+        `<div class='notion-command-sidebar-item' data-id='${sigRequest.id}'>
+          <div class='notion-command-sidebar-item-info'>
+            <div class='notion-command-sidebar-item-title'>${name}</div>
+          </div>
+          <div class='notion-command-sidebar-hover'><span>View</span></div>
+        </div>`
+      );
+    }
   }
 
   function showSigningForm() {
-    console.log("start signDocument");
     $("#signing-form-wrap").addClass("notion-show-form");
-    $("#signing-form-wrap input").val("");
-    $("#signing-form-wrap textarea").val("");
-    $("#send-signature-btn").attr("data-edit", "false");
+    const signatureForm = document.querySelector(`#${signFormId}`);
+    signatureForm.reset();
+    // $("#signing-form-wrap input").val("");
+    // $("#signing-form-wrap textarea").val("");
+    //$("#send-signature-btn").attr("data-edit", "false");
     $(".notion-form-error").removeClass("notion-form-error");
     $(".notion-form-body").scrollTop(0);
   }
@@ -206,11 +302,21 @@ $(function () {
     $("#signing-form-wrap").removeClass("notion-show-form");
   }
 
+  function closePopup() {
+    $("#notion-sign-popup").removeClass("notion-confirm-show");
+  }
+
+  function showPopup() {
+    $("#notion-sign-popup").addClass("notion-confirm-show");
+  }
   // setup buttons
   $(document).on("click", `#${extensionId}`, toggleSidebar);
   $(document).on("click", `.${signButtonClass}`, showSigningForm);
   $(document).on("click", "#notion-form-close", hideSigningForm);
+  $(document).on("click", "#notion-popup-close", closePopup);
   $(document).on("click", "#send-signature-btn", sendSignatureRequest);
+  $(document).on("click", ".notion-form-back", hideSigningForm);
+  $(document).on("click", ".notion-form-cancel", hideSigningForm);
 
   //initialize extension
   injectContent();

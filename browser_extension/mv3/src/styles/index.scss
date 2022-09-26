@@ -6,7 +6,20 @@
         &:first-child {
             margin-right: 10px;
         }
+        &:invalid {
+            border: 1px dashed #d7546c;
+        }
+        &:valid {
+            border: 1px solid rgb(231, 231, 231);
+        }
         width: 48%;
+    }
+}
+
+#notion-form-errors {
+    p {
+        font-size: small;
+        color: #d7546c;
     }
 }
 

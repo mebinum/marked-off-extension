@@ -530,7 +530,7 @@
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
 }
 .marked-button-active {
-  background: #f44444 !important;
+  background: #efefef !important;
   /* background: #efefef !important; */
 }
 #notion-marked-button:hover {

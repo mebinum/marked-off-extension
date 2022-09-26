@@ -1,4 +1,6 @@
-const MARKED_SERVER_URL = "https://marked-off-server.glitch.me";
+//const MARKED_SERVER_URL = "https://marked-off-server.glitch.me";
+
+const MARKED_SERVER_URL = "https://marked-off.herokuapp.com";
 const AFTER_INSTALL_URL =
   "https://sheda.notion.site/Getting-Started-With-Marked-Off-a923b3afc5d54778a2d0f2a2878ca8fa";
 const HELLO_SIGN_KEY =

@@ -1,8 +1,6 @@
 const { AFTER_INSTALL_URL } = require("./config");
-console.log("AFTER_INSTALL_URL", AFTER_INSTALL_URL);
 const afterInstallOrUpdate = (install = true) => {
   chrome.storage.sync.get(["commands"], function (result) {
-    console.log(result);
     if (typeof result.commands === "undefined") {
       chrome.storage.sync.set({
         commands: [
@@ -17,6 +15,7 @@ const afterInstallOrUpdate = (install = true) => {
             visibility: "Visible",
           },
         ],
+        signatureRequests: [],
       });
     }
   });
@@ -24,6 +23,14 @@ const afterInstallOrUpdate = (install = true) => {
     if (typeof result.idnum === "undefined") {
       chrome.storage.sync.set({
         idnum: 2,
+      });
+    }
+  });
+
+  chrome.storage.sync.get(["signatureRequests"], function (result) {
+    if (typeof result.signatureRequests === "undefined") {
+      chrome.storage.sync.set({
+        signatureRequests: [],
       });
     }
   });
