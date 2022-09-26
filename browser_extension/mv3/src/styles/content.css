@@ -529,9 +529,9 @@
     "Segoe UI Symbol";
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
 }
+
 .marked-button-active {
   background: #efefef !important;
-  /* background: #efefef !important; */
 }
 #notion-marked-button:hover {
   cursor: pointer;
